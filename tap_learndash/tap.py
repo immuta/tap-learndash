@@ -8,14 +8,12 @@ from singer_sdk import typing as th  # JSON schema typing helpers
 # TODO: Import your custom stream types here:
 from tap_learndash.streams import (
     LearnDashStream,
-    UsersStream,
-    GroupsStream,
+    CoursesStream
 )
 # TODO: Compile a list of custom stream types here
 #       OR rewrite discover_streams() below with your custom logic.
 STREAM_TYPES = [
-    UsersStream,
-    GroupsStream,
+    CoursesStream
 ]
 
 
@@ -25,10 +23,9 @@ class TapLearnDash(Tap):
 
     # TODO: Update this section with the actual config values you expect:
     config_jsonschema = th.PropertiesList(
-        th.Property("auth_token", th.StringType, required=True),
-        th.Property("project_ids", th.ArrayType(th.StringType), required=True),
-        th.Property("start_date", th.DateTimeType),
-        th.Property("api_url", th.StringType, default="https://api.mysample.com"),
+        th.Property("username", th.StringType, required=True),
+        th.Property("password", th.StringType, required=True),
+        th.Property("api_url", th.StringType, required=True),
     ).to_dict()
 
     def discover_streams(self) -> List[Stream]:
