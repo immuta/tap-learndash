@@ -8,12 +8,49 @@ from singer_sdk import typing as th  # JSON schema typing helpers
 # TODO: Import your custom stream types here:
 from tap_learndash.streams import (
     LearnDashStream,
-    CoursesStream
+    CoursesStream,
+    CoursesUsersStream,
+    CoursesPrerequisitesStream,
+    CoursesGroupsStream,
+    AssignmentsStream,
+    EssaysStream,
+    GroupsStream,
+    LessonsStream,
+    QuestionStream,
+    QuizStream,
+    # QuizStatisticsStream,
+    # QuizStatisticsQuestionsStream,
+    TopicStream,
+    UserCourseProgressStream,
+    UserCourseProgressStepsStream,
+    UserCoursesStream,
+    UserGroupsStream,
+    UserQuizProgressStream
 )
 # TODO: Compile a list of custom stream types here
 #       OR rewrite discover_streams() below with your custom logic.
+# PriceTypeStream, ProgressStatusStream, QuestionTypeStream removed as data is reproduced in Courses, UserProgress and Question streams
+# CoursesStepsStream removed as data returned is strange format (AL could not parse) and not critical
+# QuizStatisticsStream and QuizStatisticsQuestionsStream have permissions issues
 STREAM_TYPES = [
-    CoursesStream
+    CoursesStream,
+    CoursesUsersStream,
+    CoursesPrerequisitesStream,
+    CoursesGroupsStream,
+    AssignmentsStream,
+    EssaysStream,
+    GroupsStream,
+    LessonsStream,
+    QuestionStream,
+    QuizStream,
+    # QuizStatisticsStream,
+    # QuizStatisticsQuestionsStream,
+    TopicStream,
+    UserCourseProgressStream,
+    UserCourseProgressStepsStream,
+    UserCoursesStream,
+    UserGroupsStream,
+    UserQuizProgressStream
 ]
 
 

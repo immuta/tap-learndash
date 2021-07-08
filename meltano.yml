@@ -1,26 +1,14 @@
 version: 1
 send_anonymous_usage_stats: true
-project_id: tap-learndash
+project_id: 79e729c4-56b1-4a07-880a-10f1e9a6c12e
 plugins:
   extractors:
   - name: tap-learndash
     namespace: tap_learndash
-    # TODO: To test using Meltano, replace with absolute path
-    #       to the tap-learndash.sh script:
     executable: ./tap-learndash.sh
-    capabilities:
-    - state
-    - catalog
-    - discover
     config:
+      username: me@example.com
       start_date: '2010-01-01T00:00:00Z'
-    settings:
-    # TODO: To configure using Meltano, declare settings and their types here:
-    - name: username
-    - name: password
-      kind: password
-    - name: start_date
-      value: '2010-01-01T00:00:00Z'
   loaders:
   - name: target-jsonl
     variant: andyh1203
