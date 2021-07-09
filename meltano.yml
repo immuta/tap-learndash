@@ -6,9 +6,18 @@ plugins:
   - name: tap-learndash
     namespace: tap_learndash
     executable: ./tap-learndash.sh
+    capabilities:
+    - state
+    - catalog
+    - discover
+    settings:
+    - name: api_url
+    - name: username
+      kind: password
+    - name: password
+      kind: password
     config:
-      username: me@example.com
-      start_date: '2010-01-01T00:00:00Z'
+      api_url: https://learning.immuta.com
   loaders:
   - name: target-jsonl
     variant: andyh1203

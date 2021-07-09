@@ -22,7 +22,9 @@ class CoursesStream(LearnDashStream):
     schema = th.PropertiesList(
         th.Property("date", th.DateTimeType),
         th.Property("date_gmt", th.DateTimeType),
-        th.Property("guid", th.StringType),
+        th.Property("guid", th.ObjectType(
+            th.Property("rendered", th.StringType)
+        )),
         th.Property("id", th.IntegerType),
         th.Property("modified", th.DateTimeType),
         th.Property("modified_gmt", th.DateTimeType),
@@ -30,8 +32,13 @@ class CoursesStream(LearnDashStream):
         th.Property("status", th.StringType),
         th.Property("type", th.StringType),
         th.Property("link", th.StringType),
-        th.Property("title", th.StringType),
-        th.Property("content", th.StringType),
+        th.Property("title", th.ObjectType(
+            th.Property("rendered", th.StringType)
+        )),
+        th.Property("content", th.ObjectType(
+            th.Property("protected", th.BooleanType),
+            th.Property("rendered", th.StringType)
+        )),
         th.Property("author", th.IntegerType),
         th.Property("featured_media", th.IntegerType),
         th.Property("menu_order", th.IntegerType),
@@ -41,7 +48,9 @@ class CoursesStream(LearnDashStream):
         th.Property("ld_course_category", th.ArrayType(th.IntegerType)),
         th.Property("ld_course_tag", th.ArrayType(th.IntegerType)),
         th.Property("materials_enabled", th.BooleanType),
-        th.Property("materials", th.StringType),
+        th.Property("materials", th.ObjectType(
+            th.Property("rendered", th.StringType)
+        )),
         th.Property("certificate", th.IntegerType),
         th.Property("disable_content_table", th.BooleanType),
         th.Property("lessons_per_page", th.BooleanType),
@@ -56,8 +65,8 @@ class CoursesStream(LearnDashStream):
         th.Property("prerequisite_compare", th.StringType),
         th.Property("prerequisites", th.ArrayType(th.StringType)),
         th.Property("points_enabled", th.BooleanType),
-        th.Property("points_access", th.NumberType),
-        th.Property("points_amount", th.NumberType),
+        th.Property("points_access", th.StringType),
+        th.Property("points_amount", th.StringType),
         th.Property("progression_disabled", th.BooleanType),
         th.Property("expire_access", th.BooleanType),
         th.Property("expire_access_days", th.IntegerType),
@@ -83,24 +92,30 @@ class CoursesPrerequisitesStream(LearnDashStream):
         th.Property("id", th.IntegerType),
         th.Property("date", th.DateTimeType),
         th.Property("date_gmt", th.DateTimeType),
-        th.Property("guid", th.StringType),
+        th.Property("guid", th.ObjectType(
+            th.Property("rendered", th.StringType)
+        )),
         th.Property("modified", th.DateTimeType),
         th.Property("modified_gmt", th.DateTimeType),
         th.Property("slug", th.StringType),
         th.Property("status", th.StringType),
         th.Property("type", th.StringType),
         th.Property("link", th.StringType),
-        th.Property("title", th.StringType),
-        th.Property("content", th.StringType),
+        th.Property("title", th.ObjectType(
+            th.Property("rendered", th.StringType)
+        )),
+        th.Property("content", th.ObjectType(
+            th.Property("protected", th.BooleanType),
+            th.Property("rendered", th.StringType)
+        )),
         th.Property("author", th.IntegerType),
         th.Property("featured_media", th.IntegerType),
         th.Property("menu_order", th.IntegerType),
         th.Property("template", th.StringType),
         th.Property("categories", th.ArrayType(th.StringType)),
         th.Property("tags", th.ArrayType(th.StringType)),
-        th.Property("ld_course_category", th.ArrayType(th.StringType)),
-        th.Property("ld_course_tag", th.ArrayType(th.StringType)),
-        th.Property("_links", th.StringType)
+        th.Property("ld_course_category", th.ArrayType(th.IntegerType)),
+        th.Property("ld_course_tag", th.ArrayType(th.StringType))
     ).to_dict()
 
 
@@ -119,9 +134,12 @@ class CoursesUsersStream(LearnDashStream):
         th.Property("description", th.StringType),
         th.Property("link", th.StringType),
         th.Property("slug", th.StringType),
-        th.Property("avatar_urls", th.StringType),
-        th.Property("meta", th.StringType),
-        th.Property("_links", th.StringType)
+        th.Property("avatar_urls", th.ObjectType(
+            th.Property("24", th.StringType),
+            th.Property("48", th.StringType),
+            th.Property("96", th.StringType)
+        )),
+        th.Property("meta", th.ArrayType(th.StringType))
     ).to_dict()
 
     def get_child_context(self, record: dict, context: Optional[dict]) -> dict:
@@ -160,17 +178,21 @@ class AssignmentsStream(LearnDashStream):
     path = "/sfwd-assignment"
     primary_keys = ["id"]
     schema = th.PropertiesList(
-        th.Property("id", th.StringType),
+        th.Property("id", th.IntegerType),
         th.Property("date", th.DateTimeType),
         th.Property("date_gmt", th.DateTimeType),
-        th.Property("guid", th.StringType),
+        th.Property("guid", th.ObjectType(
+            th.Property("rendered", th.StringType)
+        )),
         th.Property("modified", th.DateTimeType),
         th.Property("modified_gmt", th.DateTimeType),
         th.Property("slug", th.StringType),
         th.Property("status", th.StringType),
         th.Property("type", th.StringType),
         th.Property("link", th.StringType),
-        th.Property("title", th.StringType),
+        th.Property("title", th.ObjectType(
+            th.Property("rendered", th.StringType)
+        )),
         th.Property("author", th.IntegerType),
         th.Property("comment_status", th.StringType),
         th.Property("ping_status", th.StringType),
@@ -181,8 +203,7 @@ class AssignmentsStream(LearnDashStream):
         th.Property("approved_status", th.StringType),
         th.Property("points_enabled", th.BooleanType),
         th.Property("points_max", th.IntegerType),
-        th.Property("points_awarded", th.IntegerType),
-        th.Property("_links", th.StringType)
+        th.Property("points_awarded", th.IntegerType)
     ).to_dict()
 
 
@@ -192,18 +213,25 @@ class EssaysStream(LearnDashStream):
     path = "/sfwd-essays"
     primary_keys = ["id"]
     schema = th.PropertiesList(
-        th.Property("id", th.StringType),
+        th.Property("id", th.IntegerType),
         th.Property("date", th.DateTimeType),
         th.Property("date_gmt", th.DateTimeType),
-        th.Property("guid", th.StringType),
+        th.Property("guid", th.ObjectType(
+            th.Property("rendered", th.StringType)
+        )),
         th.Property("modified", th.DateTimeType),
         th.Property("modified_gmt", th.DateTimeType),
         th.Property("slug", th.StringType),
         th.Property("status", th.StringType),
         th.Property("type", th.StringType),
         th.Property("link", th.StringType),
-        th.Property("title", th.StringType),
-        th.Property("content", th.StringType),
+        th.Property("title", th.ObjectType(
+            th.Property("rendered", th.StringType)
+        )),
+        th.Property("content", th.ObjectType(
+            th.Property("protected", th.BooleanType),
+            th.Property("rendered", th.StringType)
+        )),
         th.Property("author", th.IntegerType),
         th.Property("comment_status", th.StringType),
         th.Property("ping_status", th.StringType),
@@ -212,8 +240,7 @@ class EssaysStream(LearnDashStream):
         th.Property("lesson", th.IntegerType),
         th.Property("topic", th.IntegerType),
         th.Property("points_max", th.IntegerType),
-        th.Property("points_awarded", th.IntegerType),
-        th.Property("_links", th.StringType)
+        th.Property("points_awarded", th.IntegerType)
     ).to_dict()
 
 
@@ -227,15 +254,22 @@ class GroupsStream(LearnDashStream):
         th.Property("id", th.IntegerType),
         th.Property("date", th.DateTimeType),
         th.Property("date_gmt", th.DateTimeType),
-        th.Property("guid", th.StringType),
+        th.Property("guid", th.ObjectType(
+            th.Property("rendered", th.StringType)
+        )),
         th.Property("modified", th.DateTimeType),
         th.Property("modified_gmt", th.DateTimeType),
         th.Property("slug", th.StringType),
         th.Property("status", th.StringType),
         th.Property("type", th.StringType),
         th.Property("link", th.StringType),
-        th.Property("title", th.StringType),
-        th.Property("content", th.StringType),
+        th.Property("title", th.ObjectType(
+            th.Property("rendered", th.StringType)
+        )),
+        th.Property("content", th.ObjectType(
+            th.Property("protected", th.BooleanType),
+            th.Property("rendered", th.StringType)
+        )),
         th.Property("author", th.IntegerType),
         th.Property("featured_media", th.IntegerType),
         th.Property("template", th.StringType),
@@ -244,7 +278,9 @@ class GroupsStream(LearnDashStream):
         th.Property("ld_group_category", th.ArrayType(th.StringType)),
         th.Property("ld_group_tag", th.ArrayType(th.StringType)),
         th.Property("materials_enabled", th.BooleanType),
-        th.Property("materials", th.StringType),
+        th.Property("materials", th.ObjectType(
+            th.Property("rendered", th.StringType)
+        )),
         th.Property("certificate", th.IntegerType),
         th.Property("disable_content_table", th.BooleanType),
         th.Property("courses_per_page_custom", th.IntegerType),
@@ -254,8 +290,7 @@ class GroupsStream(LearnDashStream):
         th.Property("price_type_paynow_price", th.StringType),
         th.Property("price_type_subscribe_price", th.StringType),
         th.Property("price_type_closed_price", th.StringType),
-        th.Property("price_type_closed_custom_button_url", th.StringType),
-        th.Property("_links", th.StringType)
+        th.Property("price_type_closed_custom_button_url", th.StringType)
     ).to_dict()
 
 
@@ -268,15 +303,22 @@ class LessonsStream(LearnDashStream):
         th.Property("id", th.IntegerType),
         th.Property("date", th.DateTimeType),
         th.Property("date_gmt", th.DateTimeType),
-        th.Property("guid", th.StringType),
+        th.Property("guid", th.ObjectType(
+            th.Property("rendered", th.StringType)
+        )),
         th.Property("modified", th.DateTimeType),
         th.Property("modified_gmt", th.DateTimeType),
         th.Property("slug", th.StringType),
         th.Property("status", th.StringType),
         th.Property("type", th.StringType),
         th.Property("link", th.StringType),
-        th.Property("title", th.StringType),
-        th.Property("content", th.StringType),
+        th.Property("title", th.ObjectType(
+            th.Property("rendered", th.StringType)
+        )),
+        th.Property("content", th.ObjectType(
+            th.Property("protected", th.BooleanType),
+            th.Property("rendered", th.StringType)
+        )),
         th.Property("author", th.IntegerType),
         th.Property("featured_media", th.IntegerType),
         th.Property("menu_order", th.IntegerType),
@@ -286,7 +328,9 @@ class LessonsStream(LearnDashStream):
         th.Property("ld_lesson_category", th.ArrayType(th.StringType)),
         th.Property("ld_lesson_tag", th.ArrayType(th.StringType)),
         th.Property("materials_enabled", th.BooleanType),
-        th.Property("materials", th.StringType),
+        th.Property("materials", th.ObjectType(
+            th.Property("rendered", th.StringType)
+        )),
         th.Property("video_enabled", th.BooleanType),
         th.Property("video_url", th.StringType),
         th.Property("video_shown", th.StringType),
@@ -302,17 +346,16 @@ class LessonsStream(LearnDashStream):
         th.Property("assignment_points_amount", th.IntegerType),
         th.Property("assignment_auto_approve", th.BooleanType),
         th.Property("assignment_deletion_enabled", th.BooleanType),
-        th.Property("forced_timer_enabled", th.IntegerType),
-        th.Property("forced_timer_amount", th.BooleanType),
+        th.Property("forced_timer_enabled", th.BooleanType),
+        th.Property("forced_timer_amount", th.IntegerType),
         th.Property("course", th.IntegerType),
         th.Property("is_sample", th.BooleanType),
         th.Property("visible_type", th.StringType),
         th.Property("assignment_upload_limit_extensions", th.StringType),
         th.Property("assignment_upload_limit_size", th.StringType),
-        th.Property("assignment_upload_limit_count", th.IntegerType),
+        th.Property("assignment_upload_limit_count", th.BooleanType),
         th.Property("visible_after", th.IntegerType),
-        th.Property("visible_after_specific_date", th.DateTimeType),
-        th.Property("_links", th.StringType)
+        th.Property("visible_after_specific_date", th.DateTimeType)
     ).to_dict()
 
 
@@ -322,32 +365,42 @@ class QuestionStream(LearnDashStream):
     path = "/sfwd-question"
     primary_keys = ["id"]
     schema = th.PropertiesList(
-        th.Property("id", th.StringType),
+        th.Property("id", th.IntegerType),
         th.Property("date", th.DateTimeType),
         th.Property("date_gmt", th.DateTimeType),
-        th.Property("guid", th.StringType),
+        th.Property("guid", th.ObjectType(
+            th.Property("rendered", th.StringType)
+        )),
         th.Property("modified", th.DateTimeType),
         th.Property("modified_gmt", th.DateTimeType),
         th.Property("slug", th.StringType),
         th.Property("status", th.StringType),
         th.Property("type", th.StringType),
         th.Property("link", th.StringType),
-        th.Property("title", th.StringType),
-        th.Property("content", th.StringType),
+        th.Property("title", th.ObjectType(
+            th.Property("rendered", th.StringType)
+        )),
+        th.Property("content", th.ObjectType(
+            th.Property("protected", th.BooleanType),
+            th.Property("rendered", th.StringType)
+        )),
         th.Property("author", th.IntegerType),
         th.Property("featured_media", th.IntegerType),
         th.Property("menu_order", th.IntegerType),
         th.Property("template", th.StringType),
         th.Property("quiz", th.IntegerType),
-        th.Property("correct_message", th.StringType),
-        th.Property("incorrect_message", th.StringType),
+        th.Property("correct_message", th.ObjectType(
+            th.Property("rendered", th.StringType)
+        )),
+        th.Property("incorrect_message", th.ObjectType(
+            th.Property("rendered", th.StringType)
+        )),
         th.Property("hints_enabled", th.BooleanType),
         th.Property("hints_message", th.BooleanType),
         th.Property("points", th.IntegerType),
         th.Property("points_per_answer", th.BooleanType),
         th.Property("question_type", th.StringType),
-        th.Property("answer_sets", th.StringType),
-        th.Property("_links", th.StringType)
+        th.Property("answer_sets", th.StringType)
     ).to_dict()
 
 
@@ -357,18 +410,25 @@ class QuizStream(LearnDashStream):
     path = "/sfwd-quiz"
     primary_keys = ["id"]
     schema = th.PropertiesList(
-        th.Property("id", th.StringType),
+        th.Property("id", th.IntegerType),
         th.Property("date", th.DateTimeType),
         th.Property("date_gmt", th.DateTimeType),
-        th.Property("guid", th.StringType),
+        th.Property("guid", th.ObjectType(
+            th.Property("rendered", th.StringType)
+        )),
         th.Property("modified", th.DateTimeType),
         th.Property("modified_gmt", th.DateTimeType),
         th.Property("slug", th.StringType),
         th.Property("status", th.StringType),
         th.Property("type", th.StringType),
         th.Property("link", th.StringType),
-        th.Property("title", th.StringType),
-        th.Property("content", th.StringType),
+        th.Property("title", th.ObjectType(
+            th.Property("rendered", th.StringType)
+        )),
+        th.Property("content", th.ObjectType(
+            th.Property("protected", th.BooleanType),
+            th.Property("rendered", th.StringType)
+        )),
         th.Property("author", th.IntegerType),
         th.Property("featured_media", th.IntegerType),
         th.Property("menu_order", th.IntegerType),
@@ -385,7 +445,9 @@ class QuizStream(LearnDashStream):
         th.Property("time_limit_enabled", th.BooleanType),
         th.Property("time_limit_time", th.IntegerType),
         th.Property("materials_enabled", th.BooleanType),
-        th.Property("materials", th.StringType),
+        th.Property("materials", th.ObjectType(
+            th.Property("rendered", th.StringType)
+        )),
         th.Property("auto_start", th.BooleanType),
         th.Property("quiz_modus", th.StringType),
         th.Property("review_table_enabled", th.BooleanType),
@@ -425,8 +487,7 @@ class QuizStream(LearnDashStream):
         th.Property("email_enabled", th.BooleanType),
         th.Property("email_admin_enabled", th.BooleanType),
         th.Property("email_user_enabled", th.BooleanType),
-        th.Property("certificate", th.IntegerType),
-        th.Property("_links", th.StringType)
+        th.Property("certificate", th.IntegerType)
     ).to_dict()
 
     def get_child_context(self, record: dict, context: Optional[dict]) -> dict:
@@ -453,8 +514,7 @@ class QuizStream(LearnDashStream):
 #         th.Property("answers_correct", th.IntegerType),
 #         th.Property("answers_incorrect", th.IntegerType),
 #         th.Property("points_scored", th.IntegerType),
-#         th.Property("points_total", th.IntegerType),
-#         th.Property("_links", th.StringType)
+#         th.Property("points_total", th.IntegerType)
 #     ).to_dict()
 
 #     def get_child_context(self, record: dict, context: Optional[dict]) -> dict:
@@ -484,8 +544,7 @@ class QuizStream(LearnDashStream):
 #         th.Property("points_scored", th.IntegerType),
 #         th.Property("points_total", th.IntegerType),
 #         th.Property("answers", th.ArrayType(th.StringType)),
-#         th.Property("student", th.ArrayType(th.StringType)),
-#         th.Property("_links", th.StringType)
+#         th.Property("student", th.ArrayType(th.StringType))
 #     ).to_dict()
 
 
@@ -495,18 +554,25 @@ class TopicStream(LearnDashStream):
     path = "/sfwd-topic"
     primary_keys = ["id"]
     schema = th.PropertiesList(
-        th.Property("id", th.StringType),
+        th.Property("id", th.IntegerType),
         th.Property("date", th.DateTimeType),
         th.Property("date_gmt", th.DateTimeType),
-        th.Property("guid", th.StringType),
+        th.Property("guid", th.ObjectType(
+            th.Property("rendered", th.StringType)
+        )),
         th.Property("modified", th.DateTimeType),
         th.Property("modified_gmt", th.DateTimeType),
         th.Property("slug", th.StringType),
         th.Property("status", th.StringType),
         th.Property("type", th.StringType),
         th.Property("link", th.StringType),
-        th.Property("title", th.StringType),
-        th.Property("content", th.StringType),
+        th.Property("title", th.ObjectType(
+            th.Property("rendered", th.StringType)
+        )),
+        th.Property("content", th.ObjectType(
+            th.Property("protected", th.BooleanType),
+            th.Property("rendered", th.StringType)
+        )),
         th.Property("author", th.IntegerType),
         th.Property("featured_media", th.IntegerType),
         th.Property("menu_order", th.IntegerType),
@@ -514,7 +580,9 @@ class TopicStream(LearnDashStream):
         th.Property("ld_topic_category", th.ArrayType(th.StringType)),
         th.Property("ld_topic_tag", th.ArrayType(th.StringType)),
         th.Property("materials_enabled", th.BooleanType),
-        th.Property("materials", th.StringType),
+        th.Property("materials", th.ObjectType(
+            th.Property("rendered", th.StringType)
+        )),
         th.Property("video_enabled", th.BooleanType),
         th.Property("video_url", th.StringType),
         th.Property("video_shown", th.StringType),
@@ -536,8 +604,7 @@ class TopicStream(LearnDashStream):
         th.Property("lesson", th.IntegerType),
         th.Property("assignment_upload_limit_extensions", th.StringType),
         th.Property("assignment_upload_limit_size", th.StringType),
-        th.Property("assignment_upload_limit_count", th.IntegerType),
-        th.Property("_links", th.StringType)
+        th.Property("assignment_upload_limit_count", th.BooleanType)
     ).to_dict()
 
 
@@ -556,8 +623,7 @@ class UserCourseProgressStream(LearnDashStream):
         th.Property("steps_completed", th.IntegerType),
         th.Property("progress_status", th.StringType),
         th.Property("date_started", th.DateTimeType),
-        th.Property("date_completed", th.DateTimeType),
-        th.Property("_links", th.StringType)
+        th.Property("date_completed", th.DateTimeType)
     ).to_dict()
 
     def post_process(self, row: dict, context: Optional[dict] = None) -> dict:
@@ -626,24 +692,30 @@ class UserCoursesStream(LearnDashStream):
         th.Property("id", th.IntegerType),
         th.Property("date", th.DateTimeType),
         th.Property("date_gmt", th.DateTimeType),
-        th.Property("guid", th.StringType),
+        th.Property("guid", th.ObjectType(
+            th.Property("rendered", th.StringType)
+        )),
         th.Property("modified", th.DateTimeType),
         th.Property("modified_gmt", th.DateTimeType),
         th.Property("slug", th.StringType),
         th.Property("status", th.StringType),
         th.Property("type", th.StringType),
         th.Property("link", th.StringType),
-        th.Property("title", th.StringType),
-        th.Property("content", th.StringType),
+        th.Property("title", th.ObjectType(
+            th.Property("rendered", th.StringType)
+        )),
+        th.Property("content", th.ObjectType(
+            th.Property("protected", th.BooleanType),
+            th.Property("rendered", th.StringType)
+        )),
         th.Property("author", th.IntegerType),
         th.Property("featured_media", th.IntegerType),
         th.Property("menu_order", th.IntegerType),
         th.Property("template", th.StringType),
         th.Property("categories", th.ArrayType(th.StringType)),
         th.Property("tags", th.ArrayType(th.StringType)),
-        th.Property("ld_course_category", th.ArrayType(th.StringType)),
-        th.Property("ld_course_tag", th.ArrayType(th.StringType)),
-        th.Property("_links", th.StringType)
+        th.Property("ld_course_category", th.ArrayType(th.IntegerType)),
+        th.Property("ld_course_tag", th.ArrayType(th.StringType))
     ).to_dict()
 
     def post_process(self, row: dict, context: Optional[dict] = None) -> dict:
