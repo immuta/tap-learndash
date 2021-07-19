@@ -5,23 +5,16 @@ plugins:
   extractors:
   - name: tap-learndash
     namespace: tap_learndash
-    # TODO: To test using Meltano, replace with absolute path
-    #       to the tap-learndash.sh script:
     executable: ./tap-learndash.sh
     capabilities:
     - state
     - catalog
     - discover
-    config:
-      start_date: '2010-01-01T00:00:00Z'
     settings:
-    # TODO: To configure using Meltano, declare settings and their types here:
+    - name: api_url
     - name: username
+      kind: password
     - name: password
       kind: password
-    - name: start_date
-      value: '2010-01-01T00:00:00Z'
-  loaders:
-  - name: target-jsonl
-    variant: andyh1203
-    pip_url: target-jsonl
+    config:
+      api_url: https://learning.example.com
