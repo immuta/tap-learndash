@@ -13,6 +13,8 @@ from singer_sdk.streams import RESTStream
 class LearnDashStream(RESTStream):
     """LearnDash stream class."""
 
+    _page_size = 100
+
     @property
     def url_base(self) -> str:
         """Return the API URL root, configurable via tap settings."""
@@ -37,3 +39,27 @@ class LearnDashStream(RESTStream):
         resp_json = response.json()
         for row in resp_json:
             yield row
+
+    def get_next_page_token(
+        self, response: requests.Response, previous_token: Optional[Any]
+    ) -> Optional[Any]:
+        """Return a token for identifying next page or None if no more pages."""
+        current_page = previous_token or 1
+        total_pages = response.headers.get("X-WP-TotalPages", 1)
+        if current_page < int(total_pages):
+            next_page_token = current_page + 1
+            self.logger.debug(f"Next page token retrieved: {next_page_token}")
+            return next_page_token
+        return None
+
+    def get_url_params(
+        self, context: Optional[dict], next_page_token: Optional[Any]
+    ) -> Dict[str, Any]:
+        """Return a dictionary of values to be used in URL parameterization."""
+        params = {
+            "per_page": self._page_size,
+            "page": 1
+        }
+        if next_page_token:
+            params["page"] = next_page_token
+        return params

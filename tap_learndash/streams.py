@@ -75,6 +75,38 @@ class CoursesStream(LearnDashStream):
         }
 
 
+class UsersStream(LearnDashStream):
+    """Defines all the fields that exist within the wordpress user record."""
+    name = "users"
+    path = "/users"
+    primary_keys = ["id"]
+    schema = th.PropertiesList(
+        th.Property("id", th.IntegerType),
+        th.Property("name", th.StringType),
+        th.Property("url", th.StringType),
+        th.Property("description", th.StringType),
+        th.Property("link", th.StringType),
+        th.Property("slug", th.StringType),
+        th.Property("avatar_urls", th.ObjectType(
+            th.Property("24", th.StringType),
+            th.Property("48", th.StringType),
+            th.Property("96", th.StringType)
+        )),
+        th.Property("meta", th.ArrayType(th.StringType))
+    ).to_dict()
+
+    @property
+    def url_base(self) -> str:
+        """Return the API URL root, configurable via tap settings."""
+        return self.config["api_url"] + "/wp-json/wp/v2"
+
+    def get_child_context(self, record: dict, context: Optional[dict]) -> dict:
+        """Return a context dictionary for child streams."""
+        return {
+            "user_id": record["id"]
+        }
+
+
 class CoursesPrerequisitesStream(LearnDashStream):
     """Defines all the fields that exist within a course prerequisites record."""
     name = "courses_prerequisites"
@@ -248,7 +280,7 @@ class GroupsStream(LearnDashStream):
     """Defines all the fields that exist within a groups record."""
     name = "groups"
     path = "/groups"
-    primary_keys = []
+    primary_keys = ["id"]
     schema = th.PropertiesList(
         th.Property("id", th.IntegerType),
         th.Property("date", th.DateTimeType),
@@ -468,7 +500,7 @@ class UserCourseProgressStream(LearnDashStream):
     name = "user_course_progress"
     path = "/users/{user_id}/course-progress"
     primary_keys = ["user_id", "course"]
-    parent_stream_type = CoursesUsersStream
+    parent_stream_type = UsersStream
     ignore_parent_replication_keys = True
     schema = th.PropertiesList(
         th.Property("user_id", th.IntegerType),
@@ -494,42 +526,12 @@ class UserCourseProgressStream(LearnDashStream):
         }
 
 
-class UserCourseProgressStepsStream(LearnDashStream):
-    """Defines all the fields that exist within a user course progress steps record."""
-    name = "user_course_progress_steps"
-    path = "/users/{user_id}/course-progress/{course_id}/steps"
-    primary_keys = ["user_id", "course_id", "step"]
-    parent_stream_type = UserCourseProgressStream
-    ignore_parent_replication_keys = True
-    schema = th.PropertiesList(
-        th.Property("user_id", th.IntegerType),
-        th.Property("course_id", th.IntegerType),
-        th.Property("step", th.IntegerType),
-        th.Property("post_type", th.StringType),
-        th.Property("date_started", th.DateTimeType),
-        th.Property("date_completed", th.DateTimeType),
-        th.Property("step_status", th.StringType)
-    ).to_dict()
-
-    def parse_response(self, response: requests.Response) -> Iterable[dict]:
-        """Parse the response and return an iterator of result rows."""
-        resp_json = response.json()
-        for row in resp_json[0]:
-            yield row
-
-    def post_process(self, row: dict, context: Optional[dict] = None) -> dict:
-        """Append user_id and course_id to record."""
-        row["user_id"] = context["user_id"]
-        row["course_id"] = context["course_id"]
-        return row
-
-
 class UserCoursesStream(LearnDashStream):
     """Defines all the fields that exist within a user courses record."""
     name = "user_courses"
     path = "/users/{user_id}/courses"
     primary_keys = ["user_id", "id"]
-    parent_stream_type = CoursesUsersStream
+    parent_stream_type = UsersStream
     ignore_parent_replication_keys = True
     schema = th.PropertiesList(
         th.Property("user_id", th.IntegerType),
@@ -573,7 +575,7 @@ class UserGroupsStream(LearnDashStream):
     name = "user_groups"
     path = "/users/{user_id}/groups"
     primary_keys = ["user_id", "id"]
-    parent_stream_type = CoursesUsersStream
+    parent_stream_type = UsersStream
     ignore_parent_replication_keys = True
     schema = th.PropertiesList(
         th.Property("user_id", th.IntegerType),
@@ -697,6 +699,36 @@ class QuizStream(LearnDashStream):
         return {
             "quiz_id": record["id"]
         }
+
+
+# class UserCourseProgressStepsStream(LearnDashStream):
+#     """Defines all the fields that exist within a user course progress steps record."""
+#     name = "user_course_progress_steps"
+#     path = "/users/{user_id}/course-progress/{course_id}/steps"
+#     primary_keys = ["user_id", "course_id", "step"]
+#     parent_stream_type = UserCourseProgressStream
+#     ignore_parent_replication_keys = True
+#     schema = th.PropertiesList(
+#         th.Property("user_id", th.IntegerType),
+#         th.Property("course_id", th.IntegerType),
+#         th.Property("step", th.IntegerType),
+#         th.Property("post_type", th.StringType),
+#         th.Property("date_started", th.DateTimeType),
+#         th.Property("date_completed", th.DateTimeType),
+#         th.Property("step_status", th.StringType)
+#     ).to_dict()
+
+#     def parse_response(self, response: requests.Response) -> Iterable[dict]:
+#         """Parse the response and return an iterator of result rows."""
+#         resp_json = response.json()
+#         for row in resp_json[0]:
+#             yield row
+
+#     def post_process(self, row: dict, context: Optional[dict] = None) -> dict:
+#         """Append user_id and course_id to record."""
+#         row["user_id"] = context["user_id"]
+#         row["course_id"] = context["course_id"]
+#         return row
 
 
 # class QuizStatisticsStream(LearnDashStream):

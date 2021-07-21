@@ -19,9 +19,9 @@ from tap_learndash.streams import (
     QuizStream,
     TopicStream,
     UserCourseProgressStream,
-    UserCourseProgressStepsStream,
     UserCoursesStream,
-    UserGroupsStream
+    UserGroupsStream,
+    UsersStream
 )
 
 STREAM_TYPES = [
@@ -37,9 +37,9 @@ STREAM_TYPES = [
     QuizStream,
     TopicStream,
     UserCourseProgressStream,
-    UserCourseProgressStepsStream,
     UserCoursesStream,
-    UserGroupsStream
+    UserGroupsStream,
+    UsersStream
 ]
 
 
