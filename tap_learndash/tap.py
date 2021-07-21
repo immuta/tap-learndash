@@ -13,14 +13,14 @@ from tap_learndash.streams import (
     CoursesGroupsStream,
     AssignmentsStream,
     EssaysStream,
-    # GroupsStream,
+    GroupsStream,
     LessonsStream,
     QuestionStream,
     QuizStream,
     TopicStream,
     UserCourseProgressStream,
     UserCoursesStream,
-    # UserGroupsStream,
+    UserGroupsStream,
     UsersStream
 )
 
@@ -31,14 +31,14 @@ STREAM_TYPES = [
     CoursesGroupsStream,
     AssignmentsStream,
     EssaysStream,
-    # GroupsStream,
+    GroupsStream,
     LessonsStream,
     QuestionStream,
     QuizStream,
     TopicStream,
     UserCourseProgressStream,
     UserCoursesStream,
-    # UserGroupsStream,
+    UserGroupsStream,
     UsersStream
 ]
 

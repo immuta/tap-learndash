@@ -44,7 +44,6 @@ class LearnDashStream(RESTStream):
         self, response: requests.Response, previous_token: Optional[Any]
     ) -> Optional[Any]:
         """Return a token for identifying next page or None if no more pages."""
-        self.logger.debug(f"Previous token is: {previous_token}")
         current_page = previous_token or 1
         total_pages = response.headers.get("X-WP-TotalPages", 1)
         if current_page < int(total_pages):

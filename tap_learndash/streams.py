@@ -280,7 +280,7 @@ class GroupsStream(LearnDashStream):
     """Defines all the fields that exist within a groups record."""
     name = "groups"
     path = "/groups"
-    primary_keys = []
+    primary_keys = ["id"]
     schema = th.PropertiesList(
         th.Property("id", th.IntegerType),
         th.Property("date", th.DateTimeType),
