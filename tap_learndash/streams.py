@@ -107,7 +107,7 @@ class UsersStream(LearnDashStream):
         }
 
 
-class CoursesPrerequisitesStream(LearnDashStream):
+class CoursePrerequisitesStream(LearnDashStream):
     """Defines all the fields that exist within a course prerequisites record."""
     name = "courses_prerequisites"
     path = "/sfwd-courses/{course_id}/prerequisites"
@@ -146,7 +146,7 @@ class CoursesPrerequisitesStream(LearnDashStream):
     ).to_dict()
 
 
-class CoursesUsersStream(LearnDashStream):
+class CourseUsersStream(LearnDashStream):
     """Defines all the fields that exist within a course users record."""
     name = "courses_users"
     path = "/sfwd-courses/{course_id}/users"
@@ -181,7 +181,7 @@ class CoursesUsersStream(LearnDashStream):
         return row
 
 
-class CoursesGroupsStream(LearnDashStream):
+class CourseGroupsStream(LearnDashStream):
     """Defines all the fields that exist within a course groups record."""
     name = "courses_groups"
     path = "/sfwd-courses/{course_id}/groups"
@@ -390,7 +390,7 @@ class LessonsStream(LearnDashStream):
     ).to_dict()
 
 
-class QuestionStream(LearnDashStream):
+class QuestionsStream(LearnDashStream):
     """Defines all the fields that exist within a question record."""
     name = "question"
     path = "/sfwd-question"
@@ -435,7 +435,7 @@ class QuestionStream(LearnDashStream):
     ).to_dict()
 
 
-class TopicStream(LearnDashStream):
+class TopicsStream(LearnDashStream):
     """Defines all the fields that exist within a topic record."""
     name = "topic"
     path = "/sfwd-topic"
@@ -608,7 +608,7 @@ class UserGroupsStream(LearnDashStream):
     ).to_dict()
 
 
-class QuizStream(LearnDashStream):
+class QuizzesStream(LearnDashStream):
     """Defines all the fields that exist within a quiz record."""
     name = "quiz"
     path = "/sfwd-quiz"
@@ -782,7 +782,7 @@ class QuizStream(LearnDashStream):
 #     ).to_dict()
 
 
-# class UserQuizProgressStream(LearnDashStream):
+# class UserQuizzesProgressStream(LearnDashStream):
 #     """Defines all the fields that exist within a user quiz progress record."""
 #     # No data contained now
 #     name = "user_quiz_progress"
