@@ -107,9 +107,9 @@ class UsersStream(LearnDashStream):
         }
 
 
-class CoursesPrerequisitesStream(LearnDashStream):
+class CoursePrerequisitesStream(LearnDashStream):
     """Defines all the fields that exist within a course prerequisites record."""
-    name = "courses_prerequisites"
+    name = "course_prerequisites"
     path = "/sfwd-courses/{course_id}/prerequisites"
     primary_keys = ["course_id", "id"]
     parent_stream_type = CoursesStream
@@ -146,9 +146,9 @@ class CoursesPrerequisitesStream(LearnDashStream):
     ).to_dict()
 
 
-class CoursesUsersStream(LearnDashStream):
+class CourseUsersStream(LearnDashStream):
     """Defines all the fields that exist within a course users record."""
-    name = "courses_users"
+    name = "course_users"
     path = "/sfwd-courses/{course_id}/users"
     primary_keys = ["course_id", "id"]
     parent_stream_type = CoursesStream
@@ -181,9 +181,9 @@ class CoursesUsersStream(LearnDashStream):
         return row
 
 
-class CoursesGroupsStream(LearnDashStream):
+class CourseGroupsStream(LearnDashStream):
     """Defines all the fields that exist within a course groups record."""
-    name = "courses_groups"
+    name = "course_groups"
     path = "/sfwd-courses/{course_id}/groups"
     primary_keys = ["course_id", "id"]
     parent_stream_type = CoursesStream
@@ -390,9 +390,9 @@ class LessonsStream(LearnDashStream):
     ).to_dict()
 
 
-class QuestionStream(LearnDashStream):
+class QuestionsStream(LearnDashStream):
     """Defines all the fields that exist within a question record."""
-    name = "question"
+    name = "questions"
     path = "/sfwd-question"
     primary_keys = ["id"]
     schema = th.PropertiesList(
@@ -435,9 +435,9 @@ class QuestionStream(LearnDashStream):
     ).to_dict()
 
 
-class TopicStream(LearnDashStream):
+class TopicsStream(LearnDashStream):
     """Defines all the fields that exist within a topic record."""
-    name = "topic"
+    name = "topics"
     path = "/sfwd-topic"
     primary_keys = ["id"]
     schema = th.PropertiesList(
@@ -608,9 +608,9 @@ class UserGroupsStream(LearnDashStream):
     ).to_dict()
 
 
-class QuizStream(LearnDashStream):
+class QuizzesStream(LearnDashStream):
     """Defines all the fields that exist within a quiz record."""
-    name = "quiz"
+    name = "quizzes"
     path = "/sfwd-quiz"
     primary_keys = ["id"]
     schema = th.PropertiesList(
@@ -782,7 +782,7 @@ class QuizStream(LearnDashStream):
 #     ).to_dict()
 
 
-# class UserQuizProgressStream(LearnDashStream):
+# class UserQuizzesProgressStream(LearnDashStream):
 #     """Defines all the fields that exist within a user quiz progress record."""
 #     # No data contained now
 #     name = "user_quiz_progress"
