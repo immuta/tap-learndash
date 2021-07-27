@@ -93,7 +93,7 @@ class UsersStream(LearnDashStream):
         th.Property("locale", th.StringType),
         th.Property("nickname", th.StringType),
         th.Property("slug", th.StringType),
-        th.Property("roles", th.ArrayType(th.StringType))
+        th.Property("roles", th.ArrayType(th.StringType)),
         th.Property("registered_date", th.DateTimeType),
         th.Property("avatar_urls", th.ObjectType(
             th.Property("24", th.StringType),
