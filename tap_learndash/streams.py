@@ -78,15 +78,23 @@ class CoursesStream(LearnDashStream):
 class UsersStream(LearnDashStream):
     """Defines all the fields that exist within the wordpress user record."""
     name = "users"
-    path = "/users"
+    path = "/users?context=edit"
     primary_keys = ["id"]
     schema = th.PropertiesList(
         th.Property("id", th.IntegerType),
+        th.Property("username", th.StringType),
         th.Property("name", th.StringType),
+        th.Property("first_name", th.StringType),
+        th.Property("last_name", th.StringType),
+        th.Property("email", th.StringType),
         th.Property("url", th.StringType),
         th.Property("description", th.StringType),
         th.Property("link", th.StringType),
+        th.Property("locale", th.StringType),
+        th.Property("nickname", th.StringType),
         th.Property("slug", th.StringType),
+        th.Property("roles", th.ArrayType(th.StringType)),
+        th.Property("registered_date", th.DateTimeType),
         th.Property("avatar_urls", th.ObjectType(
             th.Property("24", th.StringType),
             th.Property("48", th.StringType),
